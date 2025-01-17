@@ -11,6 +11,8 @@ typedef struct matrice{
     int col;
 }matrice;
 
+
+
 // Creazione e deallocazione
 void costruire_matrice(matrice *matPtr, int n, int m);
 void costruire_matrice_random(matrice *matPtr, int n, int m);

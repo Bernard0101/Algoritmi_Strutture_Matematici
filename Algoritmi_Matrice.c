@@ -5,7 +5,7 @@
 
 #include "Algoritmi_Matrice.h"
 
-
+    
 
     //definire la misura della matrice e sue valori
     void costruire_matrice(matrice *matPtr, int n, int m){
@@ -20,7 +20,6 @@
         printf("inserisci i valori della matrice\n");
         for(int i=0; i < matPtr->lin; i++){
             for(int j=0; j < matPtr->col; j++){
-                int num=0;
                 printf("\nposizione %d, %d: ", i, j);
                 scanf("%f", (matPtr->mat + i * m + j));
                 
