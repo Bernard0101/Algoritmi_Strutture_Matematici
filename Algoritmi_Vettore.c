@@ -84,7 +84,7 @@ void aggiungere_elemento(vettore *vetPtr, vettore *vetConcat, float x){
 }
 
 //rimouve un elemento al fine del vettore o rimouve una serie di elementi
-void rimuovere_vettore(vettore *vetPtr, int pos){
+void rimuovere_vettore(vettore *vetPtr){
     vetPtr->vet[vetPtr->size] = 0;
     vetPtr->vet=realloc(vetPtr->vet, vetPtr->size-1 * sizeof(float));
     vetPtr->size--;
