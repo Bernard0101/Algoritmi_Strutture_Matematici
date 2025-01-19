@@ -10,10 +10,10 @@ void costruire_vettore(vettore *vetPtr, int n){
     vetPtr->size=n;
     vetPtr->vet=(float *)malloc(n * sizeof(float));
 
-    printf("digita i valori del vettore");
+    printf("digita i valori del vettore:\n\n");
     for(int i=0; i < n; i++){
-        int num=0;
-        printf("posizione %f: ", i);
+        float num=0;
+        printf("posizione %d: ", i);
         scanf("%f", &num);
         *(vetPtr->vet + i)=num;
     }
@@ -32,9 +32,9 @@ void costruire_vettore_random(vettore *vetPtr, int n){
 
 //stampa il vettore con n elementi
 void stampare_vettore(vettore *vetPtr){
-    printf("[");
+    printf("\n[");
     for(int i=0; i < vetPtr->size; i++){
-        printf("%f,", *(vetPtr->vet + i));
+        printf("%.2f,", *(vetPtr->vet + i));
     }
     printf("]");
 }
@@ -47,7 +47,7 @@ void sommare_vettore(vettore *vetPtr, vettore *vetSum){
         }
     }
     else{
-        printf("ERRORE: misura dei vettori diversa");
+        printf("\nERRORE: misura dei vettori diversa");
         exit(1);
     }
 }
@@ -60,7 +60,7 @@ void sotrarre_vettore(vettore *vetPtr, vettore *vetSub){
         }
     }
     else{
-        printf("ERRORE: misura dei vettori diversa");
+        printf("\nERRORE: misura dei vettori diversa");
         exit(1);
     }
 }
@@ -75,7 +75,7 @@ float moltiplicazione_scalare(vettore *vetPtr, vettore *vetMul){
         return somma;
     }
     else{
-        printf("ERRORE: misura dei vettori diversa");
+        printf("\nERRORE: misura dei vettori diversa");
         exit(1);
     }
 }
@@ -96,7 +96,7 @@ int magnitude_vettore(vettore *vetPtr){
         return sqrt(somma);
     }
     else{
-        printf("ERRORE: vettore non c'e elemento");
+        printf("\nERRORE: vettore non c'e elemento");
         exit(1);
     }
 }
@@ -114,7 +114,7 @@ void normalizare_vettore(vettore *vetPtr){
         }
     }
     else{
-        printf("ERRORE: vettore non c'e elemento");
+        printf("\nERRORE: vettore non c'e elemento");
         exit(1);
     }
 }
@@ -151,4 +151,26 @@ void dealoca_vettore(vettore *vetPtr){
     free(vetPtr->vet);
     vetPtr->vet=NULL;
     vetPtr->size=0;
+}
+
+int main(void){
+
+vettore vet1;
+vettore vet2;
+
+costruire_vettore_random(&vet2, 3);
+costruire_vettore(&vet1, 3);
+
+sommare_vettore(&vet1, &vet2);
+int magnitudine=magnitude_vettore(&vet1);
+
+printf("%d", magnitudine);
+stampare_vettore(&vet1);
+stampare_vettore(&vet2);
+
+
+
+
+
+return 0;
 }
