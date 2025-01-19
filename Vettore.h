@@ -1,5 +1,5 @@
-#ifndef ALGORIMTI_VETTORE_H
-#define ALGORIMTI_VETTORE_H
+#ifndef VETTORE_H
+#define VETTORE_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,7 +11,7 @@ typedef struct vettore
     int size;
 }vettore;
 
-// Prototipi delle funzioni
+
 void costruire_vettore(vettore *vetPtr, int n);
 void costruire_vettore_random(vettore *vetPtr, int n);
 void stampare_vettore(vettore *vetPtr);

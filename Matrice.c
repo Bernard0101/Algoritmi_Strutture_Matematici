@@ -3,7 +3,7 @@
 #include <math.h>
 #include <time.h>
 
-#include "Algoritmi_Matrice.h"
+#include "Matrice.h"
 
     
 
@@ -176,33 +176,6 @@
         return matFil;
     }
 
-    void Algoritmo_Gauss_Jordan(matrice *matPtr){
-
-        //la matrice deve essere quadratta
-        if(matPtr->col != matPtr->lin){
-            printf("ERROR matrice non quadratta");
-            exit(1);
-        }
-        //scende la scala degli pivot
-        for(int i=0, j=0; i < matPtr->lin && j < matPtr->col; i++, j++){
-            if(*(matPtr->mat + i * j) != 1){
-
-                //prende il pivot per dividere la riga e dividela
-                int pivot= *(matPtr->mat+ i * matPtr->col + j);
-                for(int k=j; k < matPtr->col; k++){
-                    *(matPtr->mat + i * matPtr->col + j) /= pivot;
-                }
-            }
-            else{
-                //pivotare e zerare
-                for(int i=0; i < matPtr->lin; i++){
-                    for(int j=0; j < matPtr->col; j++){
-                        *(matPtr->mat + j);
-                    }
-                } 
-            }
-        }
-    }
 
     void dealocare_matrice(matrice *matPtr) {
     if (matPtr != NULL) {

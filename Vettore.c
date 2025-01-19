@@ -3,7 +3,7 @@
 #include <math.h>
 #include <time.h>
 
-#include "Algoritmi_Vettore.h"
+#include "Vettore.h"
 
 //l'utente costroi un vettore di misura n
 void costruire_vettore(vettore *vetPtr, int n){
@@ -47,7 +47,8 @@ void sommare_vettore(vettore *vetPtr, vettore *vetSum){
         }
     }
     else{
-        printf("misura dei vettori diversa");
+        printf("ERRORE: misura dei vettori diversa");
+        exit(1);
     }
 }
 
@@ -59,7 +60,62 @@ void sotrarre_vettore(vettore *vetPtr, vettore *vetSub){
         }
     }
     else{
-        printf("misura dei vettori diversa");
+        printf("ERRORE: misura dei vettori diversa");
+        exit(1);
+    }
+}
+
+//moltiplica un vettore con altro
+float moltiplicazione_scalare(vettore *vetPtr, vettore *vetMul){
+    if(vetPtr->size == vetMul->size){
+        float somma=0.0;
+        for(int i=0; i < vetPtr->size; i++){
+            somma += *(vetPtr->vet + i) * *(vetMul->vet + i);
+        }
+        return somma;
+    }
+    else{
+        printf("ERRORE: misura dei vettori diversa");
+        exit(1);
+    }
+}
+
+vettore moltiplicazione_incrociata(vettore *vetPtr, vettore *vetMul){
+    if(vetPtr->size == vetMul->size){
+   
+    }
+}
+
+//calcola la magnitude del vettore
+int magnitude_vettore(vettore *vetPtr){
+    if(vetPtr->size > 0){
+        int somma=0;
+        for(int i=0; i < vetPtr->size; i++){
+            somma += pow(*(vetPtr->vet + i), 2);
+        }
+        return sqrt(somma);
+    }
+    else{
+        printf("ERRORE: vettore non c'e elemento");
+        exit(1);
+    }
+}
+
+//normalizza il vettore
+void normalizare_vettore(vettore *vetPtr){
+    if(vetPtr->size > 0){
+        float somma=0.0;
+        for(int i=0; i < vetPtr->size; i++){
+            somma += pow(*(vetPtr->vet + i), 2);
+        }
+        float magnitude=sqrt(somma);
+        for(int i=0; i < vetPtr->size; i++){
+            *(vetPtr->vet + i) /= magnitude;
+        }
+    }
+    else{
+        printf("ERRORE: vettore non c'e elemento");
+        exit(1);
     }
 }
 
