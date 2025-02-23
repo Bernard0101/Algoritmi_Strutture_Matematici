@@ -18,13 +18,13 @@ void stampare_vettore(vettore *vetPtr);
 void dealoca_vettore(vettore *vetPtr);
 
 //funzioni manipulano vettori
-void sommare_vettore(vettore *vetPtr, vettore *vetSum);
-void sottrarre_vettore(vettore *vetPtr, vettore *vetSub);
-float prodotto_scalare_algebrico(vettore *vetPtrv, vettore *vetPtrw);
-float prodotto_scalare_geometrico(vettore *vetPtrv, vettore *vetPtrw, int theta);
-void normalizzare_vettore(vettore *vetPtr);
-int magnitude_vettore(vettore *vetPtr);
-double ottenere_angolo(vettore *vetPtrv, vettore *vetPtrw);
+void sommare_vettore(vettore *vetPtr, vettore *vetSum, int show);
+void sottrarre_vettore(vettore *vetPtr, vettore *vetSub, int show);
+float prodotto_scalare_algebrico(vettore *vetPtrv, vettore *vetPtrw, int show);
+float prodotto_scalare_geometrico(vettore *vetPtrv, vettore *vetPtrw, int theta, int show);
+void normalizzare_vettore(vettore *vetPtr, int show);
+int magnitude_vettore(vettore *vetPtr, int show);
+double ottenere_angolo(vettore *vetPtrv, vettore *vetPtrw, int show);
 
 
 #endif
