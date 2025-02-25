@@ -91,8 +91,8 @@ float prodotto_scalare_algebrico(vettore *vetPtr, vettore *vetMul, int show){
 
 float prodotto_scalare_geometrico(vettore *vetPtrv, vettore *vetPtrw, int theta, int show){
     if(vetPtrv->size == vetPtrw->size){
-        int magnitude_v=magnitude_vettore(vetPtrv, 0);
-        int magnitude_w=magnitude_vettore(vetPtrw, 0);
+        float magnitude_v=magnitude_vettore(vetPtrv, 0);
+        float magnitude_w=magnitude_vettore(vetPtrw, 0);
         float result=magnitude_v * magnitude_w * cos(theta);
         if(show){
             printf("\nprodotto scalare formula goniometrica: %f\n", result);
@@ -108,15 +108,15 @@ vettore prodotto_incrociato(vettore *vetPtr, vettore *vetMul){
 }
 
 //calcola la magnitude del vettore
-int magnitude_vettore(vettore *vetPtr, int show){
+float magnitude_vettore(vettore *vetPtr, int show){
     if(vetPtr->size > 0){
         float somma=0;
         for(int i=0; i < vetPtr->size; i++){
             somma += pow(*(vetPtr->vet + i), 2);
         }
-        int result=sqrt(somma);
+        float result=sqrt(somma);
         if(show){
-            printf("\nla magnitude: %d\n", result);
+            printf("\nla magnitude: %f\n", result);
         }
         return result;
     }
@@ -145,20 +145,22 @@ void normalizare_vettore(vettore *vetPtr){
 }
 
 //ricava l'angolo formato dai vettori v e w
-double ottenere_angolo(vettore *vetPtrV, vettore *vetPtrW, int show){
+float ottenere_angolo(vettore *vetPtrV, vettore *vetPtrW, int show){
     if(vetPtrV->size > 0 && vetPtrW->size > 0){
         if(vetPtrV->size == vetPtrW->size){
-            double angle=0.0;
+            float angle=0.0;
             float moltiplication=prodotto_scalare_algebrico(vetPtrV, vetPtrW, 0);
-            int magnitudeV=magnitude_vettore(vetPtrV, 0);
-            int magnitudeW=magnitude_vettore(vetPtrW, 0);
+            float magnitudeV=magnitude_vettore(vetPtrV, 0);
+            float magnitudeW=magnitude_vettore(vetPtrW, 0);
             
+            angle=moltiplication / (magnitudeV * magnitudeW);
+
             if (angle < -1.0) angle = -1.0;
             if (angle > 1.0) angle = 1.0;
 
-            angle=moltiplication / (magnitudeV * magnitudeW);
-            double result=acos(angle);
-            double result_degrees = result * (180.0 / 3.141592653589793);
+            float result=acos(angle);
+            float result_degrees = result * (180.0 / 3.14);
+
             if(show){
                 printf("\nl'angolo formato dai vettori e: %.2lf", result_degrees);
             }
@@ -177,18 +179,22 @@ double ottenere_angolo(vettore *vetPtrV, vettore *vetPtrW, int show){
 
 void proiezione_ortogonale(vettore *vetPtrv, vettore *vetPtrw){
     if(vetPtrv->size == vetPtrw->size){
-        float prodotto=prodotto_scalare_algebrico(vetPtrv, vetPtrw, 0);
-        int magnitude_w=magnitude_vettore(vetPtrw, 0);
+        float prodotto=prodotto_scalare_algebrico(vetPtrv, vetPtrw, 1);
+        float magnitude_w=magnitude_vettore(vetPtrw, 1);
         float fattore=(prodotto / pow(magnitude_w, 2));
 
-        for(int i=0; i < vetPtrv->size; i++){
-            *(vetPtrv->vet + i) *= fattore;
+        for(int i=0; i < vetPtrw->size; i++){
+            *(vetPtrw->vet + i) *= fattore;
         }
+        stampare_vettore(vetPtrw);
+    }
+    else{
+        printf("ERRORE: dimensioni disuguali");
     }
 }
 
 //destrugge il vettore
-void dealoca_vettore(vettore *vetPtr){
+void destrurre_vettore(vettore *vetPtr){
     free(vetPtr->vet);
     vetPtr->vet=NULL;
     vetPtr->size=0;
@@ -204,5 +210,11 @@ costruire_vettore(&vet2, 2);
 
 stampare_vettore(&vet1);
 stampare_vettore(&vet2);
+
+proiezione_ortogonale(&vet1, &vet2);
+
+destrurre_vettore(&vet1);
+destrurre_vettore(&vet2);
+
 
 }
