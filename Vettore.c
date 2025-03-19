@@ -4,6 +4,7 @@
 #include <time.h>
 
 #include "Vettore.h"
+#include "Matrice.h"
 
 //l'utente costroi un vettore matematico di dimensione n
 void costruire_vettore(vettore *vetPtr, int n){
@@ -28,6 +29,25 @@ void costruire_vettore_random(vettore *vetPtr, int n){
         float num=rand() % 100;
         *(vetPtr->vet + i)=num;
     }
+}
+
+//costruisce un vettore tra due punti
+void costruire_vettore_dapunti(vettore *vetPtr, int n){
+    vetPtr->size=n;
+    vetPtr->vet=(float *)malloc(n * sizeof(float));
+    
+    printf("inserisce le coordinate dei punti");
+    for(int i=0; i < n; i++){
+        int punto1, punto2;
+        printf("coordinata %d punto 1: ", i);
+        scanf("%d", &punto1);
+        printf("coordinata %d punto 2: ", i);
+        scanf("%d", &punto2);
+
+        int fattore=punto2-punto1;
+        *(vetPtr->vet + i)=fattore;
+    }
+      
 }
 
 //stampa il vettore con n elementi
@@ -95,15 +115,48 @@ float prodotto_scalare_geometrico(vettore *vetPtrv, vettore *vetPtrw, int theta,
         float magnitude_w=magnitude_vettore(vetPtrw, 0);
         float result=magnitude_v * magnitude_w * cos(theta);
         if(show){
-            printf("\nprodotto scalare formula goniometrica: %f\n", result);
+            printf("\nprodotto scalare formula geometrica: %f\n", result);
         }
         return result;
     }
 }
 
-vettore prodotto_incrociato(vettore *vetPtr, vettore *vetMul){
-    if(vetPtr->size == vetMul->size){
+vettore *prodotto_incrociato_algebrico(vettore *vetPtr, vettore *vetMul){
+    if(vetPtr->size == vetMul->size && vetPtr->size > 2){
+        
+        //dichiarazione e allocazione delle variabile e strutture
+        vettore *normale = (vettore *)malloc(sizeof(vettore));
+        normale->size = 3;
+        normale->vet = (float *)malloc(3 * sizeof(float));
+        matrice mat1, mat2, mat3;
+        float det1, det2, det3;
 
+        //costruzione delle matrici
+        costruire_matrice(&mat1, 2, 2);
+        costruire_matrice(&mat2, 2, 2);
+        costruire_matrice(&mat3, 2, 2);
+        
+        //prende il risultato di ogni determinante
+        det1=determinante_matrice2x2(&mat1);
+        det2=determinante_matrice2x2(&mat2);
+        det3=determinante_matrice2x2(&mat3);
+        
+        //assegna i valori al nuovo vettore normale
+        normale->vet[0] = det1;
+        normale->vet[1] = -det2;
+        normale->vet[2] = det3;
+
+        
+        //dealocca la memoria delle strutture temporarie
+        dealocare_matrice(&mat1);
+        dealocare_matrice(&mat2);
+        dealocare_matrice(&mat3);
+
+        return normale;
+    }
+    else{
+        printf("ERRORE: vettori hanno dimensioni non adeguate");
+        exit(1);
     }
 }
 
@@ -127,7 +180,7 @@ float magnitude_vettore(vettore *vetPtr, int show){
 }
 
 //normalizza il vettore
-void normalizare_vettore(vettore *vetPtr){
+void normalizzare_vettore(vettore *vetPtr){
     if(vetPtr->size > 0){
         float somma=0.0;
         for(int i=0; i < vetPtr->size; i++){
@@ -194,7 +247,7 @@ void proiezione_ortogonale(vettore *vetPtrv, vettore *vetPtrw){
 }
 
 //destrugge il vettore
-void destrurre_vettore(vettore *vetPtr){
+void dealocare_vettore(vettore *vetPtr){
     free(vetPtr->vet);
     vetPtr->vet=NULL;
     vetPtr->size=0;
@@ -205,13 +258,13 @@ int main(void){
 vettore vet1;
 vettore vet2;
 
-costruire_vettore(&vet1, 2);
-costruire_vettore(&vet2, 2);
+costruire_vettore(&vet1, 2, NULL);
+costruire_vettore(&vet2, 2, NULL);
 
 stampare_vettore(&vet1);
 stampare_vettore(&vet2);
 
-proiezione_ortogonale(&vet1, &vet2);
+prodotto_scalare_algebrico(&vet1, &vet2, 1);
 
 destrurre_vettore(&vet1);
 destrurre_vettore(&vet2);

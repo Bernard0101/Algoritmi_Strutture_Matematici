@@ -5,9 +5,8 @@
 
 #include "Matrice.h"
 
-    
 
-//definire la misura della matrice e sue valori
+
 void costruire_matrice(matrice *matPtr, int n, int m){
     
     //alloca e costroi la matrice con le dimensioni n X m 
@@ -41,19 +40,37 @@ void costruire_matrice_random(matrice *matPtr, int n, int m){
     }
 }
 
-//stamapa la matrice
+void costruire_matrice_identita(matrice *matPtr, int n){
+    
+    //fa l'allocazione dinamica della struttura matriciale
+    matPtr->lin=n;
+    matPtr->col=n;
+    matPtr->mat=(float *)malloc(n * n * sizeof(float));
+
+
+    for(int i=0; i < n; i++){
+        for(int j=0; j < n; j++){
+            if(i == j){
+                *(matPtr->mat + i * n + j)=1;
+            }
+            else{
+                *(matPtr->mat + i * n + j)=0;
+            }
+        }
+    }
+}
+
 void stampare_matrice(matrice *matPtr){
     for(int i=0; i < matPtr->lin; i++){
         printf("[");
         for(int j=0; j < matPtr->col; j++){
-            printf("%f", *(matPtr->mat + i * matPtr->col + j));
+            printf("%.2f ", *(matPtr->mat + i * matPtr->col + j));
         }
         printf("]\n");
     }
     printf("\n");
 }
 
-//funzione per somare matrici
 void somare_matrice(matrice *matPtr, matrice *matSum, float num){
 
     //verifica della condizione dell'eseguimento dell'operazione
@@ -77,9 +94,12 @@ void somare_matrice(matrice *matPtr, matrice *matSum, float num){
             }
         }
     }
+    else{ 
+        printf("ERRORE: matrici con dimensioni diverse");
+        exit(1);
+    }
 }
 
-//funzione per sotrarre matrici
 void sotrarre_matrice(matrice *matPtr, matrice *matSub, float num){
 
     //condizione per eseguimento dell'operazione
@@ -103,6 +123,10 @@ void sotrarre_matrice(matrice *matPtr, matrice *matSub, float num){
             }
         }
     }
+    else{
+        printf("ERRORE: matrici con dimensioni diverse");
+        exit(1);
+    }
 }
 
 matrice *moltiplicare_matrice(matrice *matPtr, matrice *matMul, float num){
@@ -123,21 +147,30 @@ matrice *moltiplicare_matrice(matrice *matPtr, matrice *matMul, float num){
 
                 //eseguire la moltiplicazione e adizionare i nuovi numeri alla matrice
                 for(int k=0; k < matPtr->col; k++){
-                    *(matSol->mat + i * matSol->col +j) += *(matPtr->mat + i * matPtr->col + k) * *(matMul->mat + k * matMul->col + j);
+                    *(matSol->mat + i * matSol->col + j) += *(matPtr->mat + i * matPtr->col + k) * *(matMul->mat + k * matMul->col + j);
                 }
             }
         }
         return matSol;
     }
-    else if(num != 0){
+    else{
+        printf("ERRORE: matrici con dimensioni diverse");
+        exit(1);
+    }
+}
 
-        //esegue la moltiplicazione scalare
-        for(int i=0; i < matPtr->lin; i++){
-            for(int j=0; j < matPtr->col; j++){
-                *(matPtr->mat + i * matPtr->col + j) *= num;
-            }
-        }
-        return matPtr;
+float determinante_matrice2x2(matrice *matPtr){
+    if(matPtr->lin == 2 && matPtr->col == 2){
+        float a= *(matPtr->mat + 0 * matPtr->col + 0);
+        float b= *(matPtr->mat + 0 * matPtr->col + 1);
+        float c= *(matPtr->mat + 1 * matPtr->col + 0);
+        float d= *(matPtr->mat + 1 * matPtr->col + 1);
+        
+        return (a*d) - (b*c);
+    }
+    else{
+        printf("ERRORE: matrice non ha dimensioni 2x2");
+        exit(1);
     }
 }
 
@@ -180,23 +213,18 @@ matrice *applicare_filtro(matrice *matPtr, matrice *kernel){
 void dealocare_matrice(matrice *matPtr) {
 if (matPtr != NULL) {
     free(matPtr->mat); // Libera la memoria degli elementi
-    free(matPtr);      // Libera la struttura
+    free(matPtr);
 }
 }
 
 int main(void){
 
-matrice immagine;
-matrice kernel;
+matrice mat1;
 
-costruire_matrice_random(&immagine, 20, 20); 
-costruire_matrice(&kernel, 3, 3);
-stampare_matrice(&kernel);
-applicare_filtro(&immagine, &kernel);
-stampare_matrice(&immagine);
+costruire_matrice_identita(&mat1, 2);
+stampare_matrice(&mat1);
+dealocare_matrice(&mat1);
 
-dealocare_matrice(&kernel);
-dealocare_matrice(&immagine);
 
 
 }
