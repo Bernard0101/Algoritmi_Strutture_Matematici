@@ -125,32 +125,32 @@ vettore *prodotto_incrociato_algebrico(vettore *vetPtr, vettore *vetMul){
     if(vetPtr->size == vetMul->size && vetPtr->size > 2){
         
         //dichiarazione e allocazione delle variabile e strutture
-        vettore *normale = (vettore *)malloc(sizeof(vettore));
-        normale->size = 3;
-        normale->vet = (float *)malloc(3 * sizeof(float));
+        vettore *normale=(vettore *)malloc(sizeof(vettore));
+        normale->size=3;
+        normale->vet=(float *)malloc(normale->size * sizeof(float));
         matrice mat1, mat2, mat3;
         float det1, det2, det3;
 
-        //costruzione delle matrici
+        //costruzione delle matrice
+        printf("\ninserisce nelle matrici 2x2, i valori dei vettori");
         costruire_matrice(&mat1, 2, 2);
         costruire_matrice(&mat2, 2, 2);
         costruire_matrice(&mat3, 2, 2);
         
+        stampare_matrice(&mat1);
+        stampare_matrice(&mat2);
+        stampare_matrice(&mat3);
+
         //prende il risultato di ogni determinante
         det1=determinante_matrice2x2(&mat1);
         det2=determinante_matrice2x2(&mat2);
         det3=determinante_matrice2x2(&mat3);
         
         //assegna i valori al nuovo vettore normale
-        normale->vet[0] = det1;
-        normale->vet[1] = -det2;
-        normale->vet[2] = det3;
-
-        
-        //dealocca la memoria delle strutture temporarie
-        dealocare_matrice(&mat1);
-        dealocare_matrice(&mat2);
-        dealocare_matrice(&mat3);
+        normale->vet[0]= det1;
+        normale->vet[1]= -det2;
+        normale->vet[2]= det3;
+        stampare_vettore(normale);
 
         return normale;
     }
@@ -230,6 +230,7 @@ float ottenere_angolo(vettore *vetPtrV, vettore *vetPtrW, int show){
     }
 }
 
+
 void proiezione_ortogonale(vettore *vetPtrv, vettore *vetPtrw){
     if(vetPtrv->size == vetPtrw->size){
         float prodotto=prodotto_scalare_algebrico(vetPtrv, vetPtrw, 1);
@@ -251,23 +252,4 @@ void dealocare_vettore(vettore *vetPtr){
     free(vetPtr->vet);
     vetPtr->vet=NULL;
     vetPtr->size=0;
-}
-
-int main(void){
-
-vettore vet1;
-vettore vet2;
-
-costruire_vettore(&vet1, 2, NULL);
-costruire_vettore(&vet2, 2, NULL);
-
-stampare_vettore(&vet1);
-stampare_vettore(&vet2);
-
-prodotto_scalare_algebrico(&vet1, &vet2, 1);
-
-destrurre_vettore(&vet1);
-destrurre_vettore(&vet2);
-
-
 }

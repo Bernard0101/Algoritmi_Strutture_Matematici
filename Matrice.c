@@ -16,7 +16,7 @@ void costruire_matrice(matrice *matPtr, int n, int m){
     
     
     //adizionare valori alla matrice
-    printf("inserisci i valori della matrice\n");
+    printf("\ninserisci i valori della matrice\n");
     for(int i=0; i < matPtr->lin; i++){
         for(int j=0; j < matPtr->col; j++){
             printf("\nposizione %d, %d: ", i, j);
@@ -215,16 +215,4 @@ if (matPtr != NULL) {
     free(matPtr->mat); // Libera la memoria degli elementi
     free(matPtr);
 }
-}
-
-int main(void){
-
-matrice mat1;
-
-costruire_matrice_identita(&mat1, 2);
-stampare_matrice(&mat1);
-dealocare_matrice(&mat1);
-
-
-
 }
