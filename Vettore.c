@@ -121,36 +121,68 @@ float prodotto_scalare_geometrico(vettore *vetPtrv, vettore *vetPtrw, int theta,
     }
 }
 
-vettore *prodotto_incrociato_algebrico(vettore *vetPtr, vettore *vetMul){
-    if(vetPtr->size == vetMul->size && vetPtr->size > 2){
+vettore *prodotto_incrociato_algebrico(vettore *vetPtrv, vettore *vetPtrw){
+    if(vetPtrv->size == vetPtrw->size && vetPtrv->size > 2){
         
         //dichiarazione e allocazione delle variabile e strutture
         vettore *normale=(vettore *)malloc(sizeof(vettore));
         normale->size=3;
         normale->vet=(float *)malloc(normale->size * sizeof(float));
-        matrice mat1, mat2, mat3;
         float det1, det2, det3;
 
         //costruzione delle matrice
         printf("\ninserisce nelle matrici 2x2, i valori dei vettori");
-        costruire_matrice(&mat1, 2, 2);
-        costruire_matrice(&mat2, 2, 2);
-        costruire_matrice(&mat3, 2, 2);
+        matrice *mat1=(matrice *)malloc(sizeof(matrice));
+        mat1->mat=(float *)malloc(4 * sizeof(float));
+        mat1->lin=2;
+        mat1->col=2;
+
+        matrice *mat2=(matrice *)malloc(sizeof(matrice));
+        mat2->mat=(float *)malloc(4 * sizeof(float));
+        mat2->lin=2;
+        mat2->col=2;
+
+        matrice *mat3=(matrice *)malloc(sizeof(matrice));
+        mat3->mat=(float *)malloc(4 * sizeof(float));
+        mat3->lin=2;
+        mat3->col=2;
+
+        //inserire i valori dei vettori nelle matrici
+        mat1->mat[0 * 2 + 0] = vetPtrv->vet[1]; 
+        mat1->mat[0 * 2 + 1] = vetPtrw->vet[1]; 
+        mat1->mat[1 * 2 + 0] = vetPtrv->vet[2];
+        mat1->mat[1 * 2 + 1] = vetPtrw->vet[2];
         
-        stampare_matrice(&mat1);
-        stampare_matrice(&mat2);
-        stampare_matrice(&mat3);
+        mat2->mat[0 * 2 + 0] = vetPtrv->vet[0]; 
+        mat2->mat[0 * 2 + 1] = vetPtrw->vet[0]; 
+        mat2->mat[1 * 2 + 0] = vetPtrv->vet[2];
+        mat2->mat[1 * 2 + 1] = vetPtrw->vet[2];
+        
+        mat3->mat[0 * 2 + 0] = vetPtrv->vet[0]; 
+        mat3->mat[0 * 2 + 1] = vetPtrw->vet[0]; 
+        mat3->mat[1 * 2 + 0] = vetPtrv->vet[1];
+        mat3->mat[1 * 2 + 1] = vetPtrw->vet[1];
+
+
+        stampare_matrice(mat1);
+        stampare_matrice(mat2);
+        stampare_matrice(mat3);
 
         //prende il risultato di ogni determinante
-        det1=determinante_matrice2x2(&mat1);
-        det2=determinante_matrice2x2(&mat2);
-        det3=determinante_matrice2x2(&mat3);
+        det1=determinante_matrice2x2(mat1);
+        det2=determinante_matrice2x2(mat2);
+        det3=determinante_matrice2x2(mat3);
         
         //assegna i valori al nuovo vettore normale
         normale->vet[0]= det1;
         normale->vet[1]= -det2;
         normale->vet[2]= det3;
         stampare_vettore(normale);
+
+        //dealocare le matrici di temporarie
+        free(mat1->mat); free(mat1);
+        free(mat2->mat); free(mat2);
+        free(mat3->mat); free(mat3);
 
         return normale;
     }
@@ -198,7 +230,7 @@ void normalizzare_vettore(vettore *vetPtr){
 }
 
 //ricava l'angolo formato dai vettori v e w
-float ottenere_angolo(vettore *vetPtrV, vettore *vetPtrW, int show){
+float angolo_tra_vettori(vettore *vetPtrV, vettore *vetPtrW, int show){
     if(vetPtrV->size > 0 && vetPtrW->size > 0){
         if(vetPtrV->size == vetPtrW->size){
             float angle=0.0;
@@ -215,7 +247,7 @@ float ottenere_angolo(vettore *vetPtrV, vettore *vetPtrW, int show){
             float result_degrees = result * (180.0 / 3.14);
 
             if(show){
-                printf("\nl'angolo formato dai vettori e: %.2lf", result_degrees);
+                printf("\nl'angolo formato dai vettori e: %.2lf gradi", result_degrees);
             }
             return result;
         }
@@ -233,19 +265,76 @@ float ottenere_angolo(vettore *vetPtrV, vettore *vetPtrW, int show){
 
 void proiezione_ortogonale(vettore *vetPtrv, vettore *vetPtrw){
     if(vetPtrv->size == vetPtrw->size){
-        float prodotto=prodotto_scalare_algebrico(vetPtrv, vetPtrw, 1);
-        float magnitude_w=magnitude_vettore(vetPtrw, 1);
+        float prodotto=prodotto_scalare_algebrico(vetPtrv, vetPtrw, 0);
+        float magnitude_w=magnitude_vettore(vetPtrw, 0);
         float fattore=(prodotto / pow(magnitude_w, 2));
 
         for(int i=0; i < vetPtrw->size; i++){
             *(vetPtrw->vet + i) *= fattore;
         }
+        printf("\nvettore proiezione ortogonale: \n");
         stampare_vettore(vetPtrw);
     }
     else{
         printf("ERRORE: dimensioni disuguali");
+        exit(1);
     }
 }
+
+void equazione_vettoriale(vettore *Punto_A, vettore *Punto_B){
+    if(Punto_A->size == Punto_B->size){
+        vettore *vettoreAB=(vettore *)malloc(sizeof(vettore));
+        vettoreAB->size=3;
+        vettoreAB->vet=(float *)malloc(vettoreAB->size * sizeof(float));
+
+        for(int i=0; i < vettoreAB->size; i++){
+            *(vettoreAB->vet + i)= *(Punto_B->vet + i) - *(Punto_A->vet + i);
+        }
+
+        printf("\n\nl'equazione vettoriale della retta: \n%.1fx + %.1fy + %.1fz + d = 0", *(vettoreAB->vet+0), *(vettoreAB->vet+1), *(vettoreAB->vet+2));
+        free(vettoreAB);
+    }
+    else{
+        printf("ERRORE: dimensioni disuguali");
+        exit(1);
+    }
+}
+
+void equazione_parametrica(vettore *Punto_A, vettore *Punto_B){
+    if(Punto_A->size == Punto_B->size){
+        vettore *vettoreAB=(vettore *)malloc(sizeof(vettore));
+        vettoreAB->size=3;
+        vettoreAB->vet=(float *)malloc(vettoreAB->size * sizeof(float));
+
+
+        for(int i=0; i < vettoreAB->size; i++){
+            *(vettoreAB->vet + i) = *(Punto_B->vet + i) - *(Punto_A->vet + i);
+        }
+
+        printf("\n\nl'equazione parametrica della retta: ");
+        printf("\nx=%.1f + %.1ft",*(Punto_A->vet+0), *(vettoreAB->vet + 0));
+        printf("\ny=%.1f + %.1ft",*(Punto_A->vet+1), *(vettoreAB->vet + 1));
+        printf("\nz=%.1f + %.1ft",*(Punto_A->vet+2), *(vettoreAB->vet + 2));
+        free(vettoreAB);
+    }
+    else{
+        printf("ERRORE: dimensioni disuguali");
+        exit(1);
+    }
+}
+
+void equazione_del_piano(vettore *vetPtrv, vettore *vetPtrw){
+    if(vetPtrv->size == vetPtrw->size ){
+        vettore *prodotto_vetvw=prodotto_incrociato_algebrico(vetPtrv, vetPtrw);
+        printf("\n\nl'equazione del piano: \n%.1fx + %.1fy + %.1fz + d = 0", *(prodotto_vetvw->vet+0), *(prodotto_vetvw->vet+1), *(prodotto_vetvw->vet+2));
+        free(prodotto_vetvw);
+    }
+    else{
+        printf("ERRORE: dimensioni disuguali");
+        exit(1);
+    }
+}
+
 
 //destrugge il vettore
 void dealocare_vettore(vettore *vetPtr){

@@ -25,7 +25,8 @@ float prodotto_scalare_geometrico(vettore *vetPtrv, vettore *vetPtrw, int theta,
 vettore *prodotto_incrociato_algebrico(vettore *vetPtrv, vettore *vetPtrw);
 void normalizzare_vettore(vettore *vetPtr);
 float magnitude_vettore(vettore *vetPtr, int show);
-float ottenere_angolo(vettore *vetPtrv, vettore *vetPtrw, int show);
-
+float angolo_tra_vettori(vettore *vetPtrv, vettore *vetPtrw, int show);
+void equazione_vettoriale(vettore *vetPtrv, vettore *vetPrtw);
+void equazione_parametrica(vettore *vetPtrv, vettore *vetPtrw);
 
 #endif

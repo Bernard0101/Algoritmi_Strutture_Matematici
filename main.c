@@ -1,24 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "Vettore.h"
 #include "Matrice.h"
 
 int main(void){
+    srand(time(NULL));
 
-    vettore vet1;
-    vettore vet2;
+    vettore vetv;
+    vettore vetw;
 
-    costruire_vettore_random(&vet1, 3);
-    costruire_vettore_random(&vet2, 3);
+    costruire_vettore_random(&vetv, 3);
+    costruire_vettore_random(&vetw, 3);
 
-    stampare_vettore(&vet1);
-    stampare_vettore(&vet2);
+    stampare_vettore(&vetv);
+    stampare_vettore(&vetw);
 
-    prodotto_incrociato_algebrico(&vet1, &vet2);
+    equazione_vettoriale(&vetv, &vetw);
+    equazione_parametrica(&vetv, &vetw);
 
-    dealocare_vettore(&vet1);
-    dealocare_vettore(&vet2);
+    dealocare_vettore(&vetv);
+    dealocare_vettore(&vetw);
 
 
 return 0;
