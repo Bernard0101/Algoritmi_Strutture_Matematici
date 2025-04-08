@@ -28,5 +28,6 @@ float magnitude_vettore(vettore *vetPtr, int show);
 float angolo_tra_vettori(vettore *vetPtrv, vettore *vetPtrw, int show);
 void equazione_vettoriale(vettore *vetPtrv, vettore *vetPrtw);
 void equazione_parametrica(vettore *vetPtrv, vettore *vetPtrw);
+void equazione_del_piano(vettore *vetPtrv, vettore *vetPtrw);
 
 #endif
