@@ -16,6 +16,7 @@ typedef struct matrice{
 //Creazione e deallocazione
 void costruire_matrice(matrice *matPtr, int n, int m);
 void costruire_matrice_random(matrice *matPtr, int n, int m);
+void costruire_matrice_identita(matrice *matPtr, int n);
 void dealocare_matrice(matrice *matPtr);
 
 //Stampa

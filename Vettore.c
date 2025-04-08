@@ -131,7 +131,6 @@ vettore *prodotto_incrociato_algebrico(vettore *vetPtrv, vettore *vetPtrw){
         float det1, det2, det3;
 
         //costruzione delle matrice
-        printf("\ninserisce nelle matrici 2x2, i valori dei vettori");
         matrice *mat1=(matrice *)malloc(sizeof(matrice));
         mat1->mat=(float *)malloc(4 * sizeof(float));
         mat1->lin=2;
@@ -148,25 +147,21 @@ vettore *prodotto_incrociato_algebrico(vettore *vetPtrv, vettore *vetPtrw){
         mat3->col=2;
 
         //inserire i valori dei vettori nelle matrici
-        mat1->mat[0 * 2 + 0] = vetPtrv->vet[1]; 
-        mat1->mat[0 * 2 + 1] = vetPtrw->vet[1]; 
-        mat1->mat[1 * 2 + 0] = vetPtrv->vet[2];
-        mat1->mat[1 * 2 + 1] = vetPtrw->vet[2];
+        mat1->mat[0 * 2 + 0]=vetPtrv->vet[1]; 
+        mat1->mat[0 * 2 + 1]=vetPtrw->vet[1]; 
+        mat1->mat[1 * 2 + 0]=vetPtrv->vet[2];
+        mat1->mat[1 * 2 + 1]=vetPtrw->vet[2];
         
-        mat2->mat[0 * 2 + 0] = vetPtrv->vet[0]; 
-        mat2->mat[0 * 2 + 1] = vetPtrw->vet[0]; 
-        mat2->mat[1 * 2 + 0] = vetPtrv->vet[2];
-        mat2->mat[1 * 2 + 1] = vetPtrw->vet[2];
+        mat2->mat[0 * 2 + 0]=vetPtrv->vet[0]; 
+        mat2->mat[0 * 2 + 1]=vetPtrw->vet[0]; 
+        mat2->mat[1 * 2 + 0]=vetPtrv->vet[2];
+        mat2->mat[1 * 2 + 1]=vetPtrw->vet[2];
         
-        mat3->mat[0 * 2 + 0] = vetPtrv->vet[0]; 
-        mat3->mat[0 * 2 + 1] = vetPtrw->vet[0]; 
-        mat3->mat[1 * 2 + 0] = vetPtrv->vet[1];
-        mat3->mat[1 * 2 + 1] = vetPtrw->vet[1];
+        mat3->mat[0 * 2 + 0]=vetPtrv->vet[0]; 
+        mat3->mat[0 * 2 + 1]=vetPtrw->vet[0]; 
+        mat3->mat[1 * 2 + 0]=vetPtrv->vet[1];
+        mat3->mat[1 * 2 + 1]=vetPtrw->vet[1];
 
-
-        stampare_matrice(mat1);
-        stampare_matrice(mat2);
-        stampare_matrice(mat3);
 
         //prende il risultato di ogni determinante
         det1=determinante_matrice2x2(mat1);
@@ -177,13 +172,14 @@ vettore *prodotto_incrociato_algebrico(vettore *vetPtrv, vettore *vetPtrw){
         normale->vet[0]= det1;
         normale->vet[1]= -det2;
         normale->vet[2]= det3;
+        printf("\n\nprodotto incrociato: ");
         stampare_vettore(normale);
 
         //dealocare le matrici di temporarie
         free(mat1->mat); free(mat1);
         free(mat2->mat); free(mat2);
         free(mat3->mat); free(mat3);
-
+        printf("\n");
         return normale;
     }
     else{
@@ -201,7 +197,7 @@ float magnitude_vettore(vettore *vetPtr, int show){
         }
         float result=sqrt(somma);
         if(show){
-            printf("\nla magnitude: %f\n", result);
+            printf("\n\nla magnitude: %f\n", result);
         }
         return result;
     }
@@ -247,7 +243,7 @@ float angolo_tra_vettori(vettore *vetPtrV, vettore *vetPtrW, int show){
             float result_degrees = result * (180.0 / 3.14);
 
             if(show){
-                printf("\nl'angolo formato dai vettori e: %.2lf gradi", result_degrees);
+                printf("\nl'angolo formato dai vettori e:\n %.2lf gradi", result_degrees);
             }
             return result;
         }
@@ -272,8 +268,9 @@ void proiezione_ortogonale(vettore *vetPtrv, vettore *vetPtrw){
         for(int i=0; i < vetPtrw->size; i++){
             *(vetPtrw->vet + i) *= fattore;
         }
-        printf("\nvettore proiezione ortogonale: \n");
+        printf("\nvettore proiezione ortogonale:");
         stampare_vettore(vetPtrw);
+        printf("\n");
     }
     else{
         printf("ERRORE: dimensioni disuguali");

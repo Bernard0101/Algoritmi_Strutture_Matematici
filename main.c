@@ -10,18 +10,24 @@ int main(void){
 
     vettore vetv;
     vettore vetw;
+    vettore *normale;
 
-    costruire_vettore_random(&vetv, 3);
-    costruire_vettore_random(&vetw, 3);
+    costruire_vettore(&vetv, 3);
+    costruire_vettore(&vetw, 3);
 
     stampare_vettore(&vetv);
     stampare_vettore(&vetw);
 
-    equazione_vettoriale(&vetv, &vetw);
-    equazione_parametrica(&vetv, &vetw);
+    normale=prodotto_incrociato_algebrico(&vetv, &vetw);
+    proiezione_ortogonale(&vetv, &vetw);
+
+    angolo_tra_vettori(normale, &vetw, 1);
+   
 
     dealocare_vettore(&vetv);
+    dealocare_vettore(normale);
     dealocare_vettore(&vetw);
+
 
 
 return 0;

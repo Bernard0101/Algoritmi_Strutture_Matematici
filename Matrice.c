@@ -61,6 +61,7 @@ void costruire_matrice_identita(matrice *matPtr, int n){
 }
 
 void stampare_matrice(matrice *matPtr){
+    printf("\n");
     for(int i=0; i < matPtr->lin; i++){
         printf("[");
         for(int j=0; j < matPtr->col; j++){
@@ -211,8 +212,8 @@ matrice *applicare_filtro(matrice *matPtr, matrice *kernel){
 
 
 void dealocare_matrice(matrice *matPtr) {
-if (matPtr != NULL) {
-    free(matPtr->mat); // Libera la memoria degli elementi
-    free(matPtr);
-}
+    free(matPtr->mat);
+    matPtr->mat=NULL;
+    matPtr->lin=0;
+    matPtr->col=0;
 }
