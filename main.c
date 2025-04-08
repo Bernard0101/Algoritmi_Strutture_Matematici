@@ -29,6 +29,5 @@ int main(void){
     dealocare_vettore(&vetw);
 
 
-
 return 0;
 }
