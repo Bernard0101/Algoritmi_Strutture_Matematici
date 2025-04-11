@@ -14,6 +14,8 @@ typedef struct vettore
 //funzione che construiscono la struttura vettoriale
 void costruire_vettore(vettore *vetPtr, int n);
 void costruire_vettore_random(vettore *vetPtr, int n);
+void costruire_vettore_dapunti(vettore *punto_A, vettore *punto_B);
+vettore *copiare_vettore(vettore *vetPtr);
 void stampare_vettore(vettore *vetPtr);
 void dealocare_vettore(vettore *vetPtr);
 

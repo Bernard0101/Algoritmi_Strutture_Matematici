@@ -35,7 +35,7 @@ void costruire_matrice_random(matrice *matPtr, int n, int m){
 
     for(int i=0; i < matPtr->lin; i++){
         for(int j=0; j < matPtr->col; j++){
-            *(matPtr->mat + i * m +j) = rand() % 100;
+            *(matPtr->mat + i * matPtr->col +j) = rand() % 100;
         }
     }
 }
@@ -60,6 +60,55 @@ void costruire_matrice_identita(matrice *matPtr, int n){
     }
 }
 
+void costruire_matrice_triangolare_superiore(matrice *matPtr, int n){
+    matPtr->lin=n;
+    matPtr->col=n;
+    matPtr->mat=(float *)malloc(n * n * sizeof(float));
+
+    for(int i=0; i < matPtr->lin; i++){
+        for(int j=0; j < matPtr->col; j++){
+            if(i == j || i < j){
+                *(matPtr->mat + i * matPtr->col + j) = rand() % 100;
+            }
+            else{
+                *(matPtr->mat + i * matPtr->col + j) = 0;
+            }
+        }
+    }
+}
+
+void costruire_matrice_triangolare_inferiore(matrice *matPtr, int n){
+    matPtr->lin=n;
+    matPtr->col=n;
+    matPtr->mat=(float *)malloc(n * n * sizeof(float));
+
+    for(int i=0; i < matPtr->lin; i++){
+        for(int j=0; j < matPtr->col; j++){
+            if(i == j || i > j){
+                *(matPtr->mat + i * matPtr->col + j) = rand() % 100;
+            }
+            else{
+                *(matPtr->mat + i * matPtr->col + j) = 0;
+            }
+        }
+    }
+} 
+
+void costruire_matrice_nulla(matrice *matPtr, int n, int m){
+    matPtr->lin=n;
+    matPtr->col=m;
+    matPtr->mat=(float *)malloc(n * m * sizeof(float));
+
+    for(int i=0; i < matPtr->lin; i++){
+        for(int j=0; j < matPtr->col; j++){
+            *(matPtr->mat + i * matPtr->col + j) = 0;
+        }
+    }
+}
+
+
+
+
 void stampare_matrice(matrice *matPtr){
     printf("\n");
     for(int i=0; i < matPtr->lin; i++){
@@ -72,92 +121,75 @@ void stampare_matrice(matrice *matPtr){
     printf("\n");
 }
 
-void somare_matrice(matrice *matPtr, matrice *matSum, float num){
-
-    //verifica della condizione dell'eseguimento dell'operazione
-    if(matPtr == NULL){
-        printf("matrice e nulla");
-        exit(1);
-    }
-    //soma con scalare
-    if(matSum == NULL && num != 0){
+void somma_scalare(matrice *matPtr, float num){
+    if(matPtr != NULL){
         for(int i=0; i < matPtr->lin; i++){
             for(int j=0; j < matPtr->col; j++){
                 *(matPtr->mat + i * matPtr->col + j) += num;
-            }
-        }
-    }
-    //soma tra matrici
-    else if (matPtr->lin == matSum->lin && matPtr->col == matSum->col){
-        for(int i=0; i < matPtr->lin; i++){
-            for(int j=0; j < matPtr->col; j++){
-                *(matPtr->mat + i * matPtr->col + j) += *(matSum->mat + i * matSum->col + j);
-            }
-        }
-    }
-    else{ 
-        printf("ERRORE: matrici con dimensioni diverse");
-        exit(1);
-    }
-}
-
-void sotrarre_matrice(matrice *matPtr, matrice *matSub, float num){
-
-    //condizione per eseguimento dell'operazione
-    if(matPtr == NULL){
-        printf("matrice e nulla");
-        exit(1);
-    }
-    //sotrazione con scalare
-    if(matSub == NULL && num != 0){
-        for(int i=0; i < matPtr->lin; i++){
-            for(int j=0; j < matPtr->col; j++){
-                *(matPtr->mat + i * matPtr->col + j) += num;
-            }
-        }
-    }
-    //sotrazione tra matrici
-    else if (matPtr->lin == matSub->lin && matPtr->col == matSub->col){
-        for(int i=0; i < matPtr->lin; i++){
-            for(int j=0; j < matPtr->col; j++){
-                *(matPtr->mat + i * matPtr->col + j) -= *(matSub->mat + i * matSub->col + j);
             }
         }
     }
     else{
-        printf("ERRORE: matrici con dimensioni diverse");
-        exit(1);
+        printf("ERRORE: Matrice nulla");
     }
 }
 
-matrice *moltiplicare_matrice(matrice *matPtr, matrice *matMul, float num){
-    if(matPtr->col == matMul->lin && num == 0){
-
-        //creare la nuova matrice risultato
-        matrice *matSol = (matrice *)malloc(sizeof(matrice));
-        matSol->lin = matPtr->lin;
-        matSol->col = matMul->col;
-        matSol->mat = (float*)malloc(matPtr->lin * matMul->col * sizeof(float));
-
-
-        //iterare sulle linee di matPtr
+void sottrazione_scalare(matrice *matPtr, float num){
+    if(matPtr != NULL){
         for(int i=0; i < matPtr->lin; i++){
+            for(int j=0; j < matPtr->col; j++){
+                *(matPtr->mat + i * matPtr->col + j) -= num;
+            }
+        }
+    }
+    else{
+        printf("ERRORE: Matrice nulla");
+    }
+}
 
-            //iterare sulle cologne di matMul
-            for(int j=0; j < matMul->col; j++){
-
-                //eseguire la moltiplicazione e adizionare i nuovi numeri alla matrice
-                for(int k=0; k < matPtr->col; k++){
-                    *(matSol->mat + i * matSol->col + j) += *(matPtr->mat + i * matPtr->col + k) * *(matMul->mat + k * matMul->col + j);
+void somma_matriciale(matrice *matPtr, matrice *matSum){
+    if(matPtr != NULL && matSum != NULL){
+        if(matPtr->lin == matSum->lin && matPtr->col == matSum->col){
+            for(int i=0; i < matPtr->lin; i++){
+                for(int j=0; j < matPtr->col; j++){
+                    *(matPtr->mat + i * matPtr->col + j) += *(matSum->mat + i * matSum->col + j);
                 }
             }
         }
-        return matSol;
+        else{
+            printf("ERRORE: matrici con dimensioni diverse");
+            exit(1);
+        }
     }
     else{
-        printf("ERRORE: matrici con dimensioni diverse");
+        printf("ERRORE: matrici nulle");
+        exit(1);
+    }   
+}
+
+void sottrazione_matriciale(matrice *matPtr, matrice *matSub){
+    if(matPtr != NULL && matSub != NULL){
+        if(matPtr->lin == matSub->lin && matPtr->col == matSub->col){
+            for(int i=0; i < matPtr->lin; i++){
+                for(int j=0; j < matPtr->col; j++){
+                    *(matPtr->mat + i * matPtr->col + j) -= *(matSub->mat + i * matSub->col + j);
+                }
+            }
+        }
+        else{
+            printf("ERRORE: matrici con dimensioni diverse");
+            exit(1);
+        }
+    }
+    else{
+        printf("ERRORE: matrici nulle");
         exit(1);
     }
+    
+}
+
+matrice *moltiplicare_matrice(matrice *matPtr, matrice *matMul, float num){
+    
 }
 
 float determinante_matrice2x2(matrice *matPtr){
@@ -175,40 +207,7 @@ float determinante_matrice2x2(matrice *matPtr){
     }
 }
 
-matrice *applicare_filtro(matrice *matPtr, matrice *kernel){
 
-    matrice *matFil = (matrice *)malloc(sizeof(matrice));
-    matFil->lin = matPtr->lin;
-    matFil->col = matPtr->col;
-    matFil->mat=(float *)malloc(matFil->lin * matFil->col * sizeof(float));
-
-    //prende il centro dello kernel
-    int centroLin=kernel->lin / 2;
-    int centroCol=kernel->col / 2;
-
-    //itera sulla matrice cioe l'immagine
-    for(int i=0; i < matPtr->lin; i++){
-        for(int j=0; j < matPtr->col; j++){
-            float somma = 0.0;
-
-            //itera sull kernel cioe il filtro
-            for(int ki=0; ki < kernel->lin; ki++){
-                for(int kj=0; kj < kernel->col; kj++){
-
-                    //calcola le cordinate nella matrice a rispeto del kernel
-                    int lin = i + ki - centroLin;
-                    int col = j + kj - centroCol;
-
-                    if(lin >= 0 && lin < matPtr->lin && col >= 0 && col < matPtr->col){
-                        somma += *(matPtr->mat + lin * matPtr->col + col) * *(kernel->mat + ki * kernel->col + kj);
-                    }
-                }
-            }
-            *(matFil->mat + i * matFil->col + j) = somma;
-        }
-    }
-    return matFil;
-}
 
 
 void dealocare_matrice(matrice *matPtr) {

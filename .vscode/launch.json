@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/bernard-linux/Desktop/Programmazione/C-like/Algoritmi Matematici",
-      "program": "/home/bernard-linux/Desktop/Programmazione/C-like/Algoritmi Matematici/build/Debug/outDebug",
+      "cwd": "/home/bernard-linux/Desktop/Programmazione/C-like/Algoritmi Strutture Matematici",
+      "program": "/home/bernard-linux/Desktop/Programmazione/C-like/Algoritmi Strutture Matematici/build/Release/outRelease",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

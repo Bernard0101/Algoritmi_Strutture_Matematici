@@ -11,6 +11,7 @@ int main(void){
     vettore vetv;
     vettore vetw;
     vettore *normale;
+    vettore *copia;
 
     costruire_vettore(&vetv, 3);
     costruire_vettore(&vetw, 3);
@@ -19,9 +20,9 @@ int main(void){
     stampare_vettore(&vetw);
 
     normale=prodotto_incrociato_algebrico(&vetv, &vetw);
-    proiezione_ortogonale(&vetv, &vetw);
+    copia=copiare_vettore(&vetw);
 
-    angolo_tra_vettori(normale, &vetw, 1);
+    angolo_tra_vettori(normale, copia, 1);
    
 
     dealocare_vettore(&vetv);

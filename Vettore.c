@@ -50,6 +50,17 @@ void costruire_vettore_dapunti(vettore *vetPtr, int n){
       
 }
 
+vettore *copiare_vettore(vettore *vetPtr){
+    vettore *vetcopy=(vettore *)malloc(sizeof(vettore));
+    vetcopy->size=vetPtr->size;
+    vetcopy->vet=(float *)malloc(vetcopy->size * sizeof(float));
+    for(int i=0; i < vetPtr->size; i++){
+        *(vetcopy->vet + i)= *(vetPtr->vet+i);
+    }
+    printf("vettore copiato con sucesso\n");
+    return vetcopy;
+}
+
 //stampa il vettore con n elementi
 void stampare_vettore(vettore *vetPtr){
     printf("\n[");
