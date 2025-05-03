@@ -47,7 +47,6 @@ void costruire_matrice_identita(matrice *matPtr, int n){
     matPtr->col=n;
     matPtr->mat=(float *)malloc(n * n * sizeof(float));
 
-
     for(int i=0; i < n; i++){
         for(int j=0; j < n; j++){
             if(i == j){
@@ -188,7 +187,7 @@ void sottrazione_matriciale(matrice *matPtr, matrice *matSub){
     
 }
 
-matrice *moltiplicare_matrice(matrice *matPtr, matrice *matMul, float num){
+matrice *moltiplicazione_matriciale(matrice *matPtr, matrice *matMul, float num){
     
 }
 
@@ -206,8 +205,6 @@ float determinante_matrice2x2(matrice *matPtr){
         exit(1);
     }
 }
-
-
 
 
 void dealocare_matrice(matrice *matPtr) {

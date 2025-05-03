@@ -8,26 +8,26 @@
 int main(void){
     srand(time(NULL));
 
-    vettore vetv;
-    vettore vetw;
-    vettore *normale;
-    vettore *copia;
+    vettore vetAB;
+    vettore vetAC;
+    vettore *ProdottoAB_AC;
+    float magnitudine;
+    float risultato;
+    
 
-    costruire_vettore(&vetv, 3);
-    costruire_vettore(&vetw, 3);
+    costruire_vettore(&vetAB, 3);
+    stampare_vettore(&vetAB);
 
-    stampare_vettore(&vetv);
-    stampare_vettore(&vetw);
+    costruire_vettore(&vetAC, 3);
+    stampare_vettore(&vetAC);
+    
 
-    normale=prodotto_incrociato_algebrico(&vetv, &vetw);
-    copia=copiare_vettore(&vetw);
+    equazione_parametrica(&vetAB, &vetAC);
 
-    angolo_tra_vettori(normale, copia, 1);
-   
-
-    dealocare_vettore(&vetv);
-    dealocare_vettore(normale);
-    dealocare_vettore(&vetw);
+    
+    dealocare_vettore(&vetAB);
+    dealocare_vettore(ProdottoAB_AC);
+    dealocare_vettore(&vetAC);
 
 
 

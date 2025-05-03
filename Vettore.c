@@ -36,15 +36,15 @@ void costruire_vettore_dapunti(vettore *vetPtr, int n){
     vetPtr->size=n;
     vetPtr->vet=(float *)malloc(n * sizeof(float));
     
-    printf("inserisce le coordinate dei punti");
+    printf("\ninserisce le coordinate dei punti\n");
     for(int i=0; i < n; i++){
         int punto1, punto2;
-        printf("coordinata %d punto 1: ", i);
+        printf("\ncoordinata %d punto 1: ", i);
         scanf("%d", &punto1);
-        printf("coordinata %d punto 2: ", i);
+        printf("\ncoordinata %d punto 2: ", i);
         scanf("%d", &punto2);
 
-        int fattore=punto2-punto1;
+        float fattore=punto2-punto1;
         *(vetPtr->vet + i)=fattore;
     }
       
