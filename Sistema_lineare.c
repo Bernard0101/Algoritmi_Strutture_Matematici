@@ -98,6 +98,37 @@ void scambiare_righe_sistema_lineare(sistema_lineare *sistemaPtr, int riga1, int
     }
 }
 
+void scalonare_riga_sistema_lineare(sistema_lineare *sistemaPtr, int riga_pivot, int riga_scalonare, int colonna_pivot){
+    if(sistemaPtr != NULL){
+        if(colonna_pivot < sistemaPtr->matPtr->col && riga_scalonare < sistemaPtr->matPtr->lin && riga_pivot < sistemaPtr->matPtr->lin){
+            float coefficiente= - *(sistemaPtr->matPtr->mat + riga_scalonare * sistemaPtr->matPtr->col + colonna_pivot);
+            for(int i=0; i < sistemaPtr->matPtr->col; i++){
+                float termine_eliminativo= *(sistemaPtr->matPtr->mat + riga_pivot * sistemaPtr->matPtr->col + i);
+                termine_eliminativo*=coefficiente;
+                printf("%.1f", termine_eliminativo);
+                *(sistemaPtr->matPtr->mat + riga_scalonare * sistemaPtr->matPtr->col + i) += termine_eliminativo;
+            }
+            float termine_eliminativo= *(sistemaPtr->vetPtr->vet + riga_pivot);
+            termine_eliminativo*=coefficiente;
+            *(sistemaPtr->vetPtr->vet + riga_scalonare) += termine_eliminativo;
+            
+        }
+        else{
+            printf("ERRORE: colonna_pivot %d e/o riga_scalonare %d, valore invalido", colonna_pivot, riga_scalonare);
+            exit(1);
+        }
+    }
+    else{
+        printf("ERRORE: sistema lineare NULL");
+        exit(1);
+    }
+}
+ 
+void Eliminazione_Gauss_Jordan(sistema_lineare *sistemaPtr){
+
+}
+
+
 int main(void){
     sistema_lineare sistema_test;
     matrice matPtr;
@@ -108,8 +139,7 @@ int main(void){
 
     costruire_sistema_lineare(&sistema_test, &matPtr, &vetPtr);
     stampare_sistema_lineare(&sistema_test);
-    scambiare_righe_sistema_lineare(&sistema_test, 2, 3);
-    stampare_sistema_lineare(&sistema_test);
-    moltiplicare_riga_sistema_lineare(&sistema_test, 3, 3);
+    scalonare_riga_sistema_lineare(&sistema_test, 0, 1, 0);
+    scalonare_riga_sistema_lineare(&sistema_test, 0, 2, 0);
     stampare_sistema_lineare(&sistema_test);
 }
