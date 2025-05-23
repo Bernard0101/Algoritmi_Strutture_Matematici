@@ -3,15 +3,7 @@
 
 #include "Matrice.h"
 #include "Vettore.h"
-
-
-typedef struct sistema_lineare{
-    int lin;
-    int col;
-    matrice *matPtr; 
-    vettore *vetPtr;
-}sistema_lineare;
-
+#include "Sistema_lineare.h"
 
 
 void costruire_sistema_lineare(sistema_lineare *sistemaPtr, matrice *matPtr, vettore *vetPtr){
@@ -101,7 +93,7 @@ void scambiare_righe_sistema_lineare(sistema_lineare *sistemaPtr, int riga1, int
 void scalonare_riga_sistema_lineare(sistema_lineare *sistemaPtr, int riga_pivot, int riga_scalonare, int colonna_pivot){
     if(sistemaPtr != NULL){
         if(colonna_pivot < sistemaPtr->matPtr->col && riga_scalonare < sistemaPtr->matPtr->lin && riga_pivot < sistemaPtr->matPtr->lin){
-            float coefficiente= - *(sistemaPtr->matPtr->mat + riga_scalonare * sistemaPtr->matPtr->col + colonna_pivot);
+            float coefficiente=- *(sistemaPtr->matPtr->mat + riga_scalonare * sistemaPtr->matPtr->col + colonna_pivot);
             for(int i=0; i < sistemaPtr->matPtr->col; i++){
                 float termine_eliminativo= *(sistemaPtr->matPtr->mat + riga_pivot * sistemaPtr->matPtr->col + i);
                 termine_eliminativo*=coefficiente;
@@ -111,7 +103,6 @@ void scalonare_riga_sistema_lineare(sistema_lineare *sistemaPtr, int riga_pivot,
             float termine_eliminativo= *(sistemaPtr->vetPtr->vet + riga_pivot);
             termine_eliminativo*=coefficiente;
             *(sistemaPtr->vetPtr->vet + riga_scalonare) += termine_eliminativo;
-            
         }
         else{
             printf("ERRORE: colonna_pivot %d e/o riga_scalonare %d, valore invalido", colonna_pivot, riga_scalonare);
@@ -125,21 +116,25 @@ void scalonare_riga_sistema_lineare(sistema_lineare *sistemaPtr, int riga_pivot,
 }
  
 void Eliminazione_Gauss_Jordan(sistema_lineare *sistemaPtr){
-
-}
-
-
-int main(void){
-    sistema_lineare sistema_test;
-    matrice matPtr;
-    vettore vetPtr;
-
-    costruire_matrice(&matPtr, 3, 3);
-    costruire_vettore(&vetPtr, 3);
-
-    costruire_sistema_lineare(&sistema_test, &matPtr, &vetPtr);
-    stampare_sistema_lineare(&sistema_test);
-    scalonare_riga_sistema_lineare(&sistema_test, 0, 1, 0);
-    scalonare_riga_sistema_lineare(&sistema_test, 0, 2, 0);
-    stampare_sistema_lineare(&sistema_test);
+    printf("inizio 1");
+    if(sistemaPtr != NULL){
+        for(int i=0, j=0; i < sistemaPtr->lin; i++, j++){
+            if(*(sistemaPtr->matPtr->mat + i * sistemaPtr->matPtr->col + j) == 1){
+                for(int k=0; k < sistemaPtr->matPtr->lin; k++){
+                    scalonare_riga_sistema_lineare(&sistemaPtr, i, k, j);
+                }
+            }
+            else{
+                float coefficiente= *(sistemaPtr->matPtr->mat + i * sistemaPtr->matPtr->col + j);
+                dividere_riga_sistema_lineare(&sistemaPtr, i, coefficiente);
+                for(int k=0; k < sistemaPtr->matPtr->lin; k++){
+                    scalonare_riga_sistema_lineare(&sistemaPtr, i, k, j);
+                }
+            }
+        }
+    }
+    else{
+        printf("ERRORE: Sistema Lineare NULL");
+        exit(1);
+    }
 }

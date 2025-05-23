@@ -191,6 +191,10 @@ matrice *moltiplicazione_matriciale(matrice *matPtr, matrice *matMul, float num)
     
 }
 
+matrice *transporre_matrice(matrice *matPtr){
+
+}
+
 float determinante_matrice2x2(matrice *matPtr){
     if(matPtr->lin == 2 && matPtr->col == 2){
         float a= *(matPtr->mat + 0 * matPtr->col + 0);

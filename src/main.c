@@ -4,6 +4,7 @@
 
 #include "Vettore.h"
 #include "Matrice.h"
+#include "Sistema_lineare.h"
 
 int main(void){
     srand(time(NULL));
@@ -21,12 +22,13 @@ int main(void){
     costruire_vettore(&vetAC, 3);
     stampare_vettore(&vetAC);
     
-
-    equazione_parametrica(&vetAB, &vetAC);
-
+    ProdottoAB_AC=prodotto_incrociato_algebrico(&vetAB, &vetAC);
+    stampare_vettore(ProdottoAB_AC);
     
+    magnitude_vettore(ProdottoAB_AC, 1);
+
+    dealocare_vettore(&ProdottoAB_AC);
     dealocare_vettore(&vetAB);
-    dealocare_vettore(ProdottoAB_AC);
     dealocare_vettore(&vetAC);
 
 
