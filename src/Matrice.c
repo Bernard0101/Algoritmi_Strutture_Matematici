@@ -111,7 +111,7 @@ void costruire_matrice_nulla(matrice *matPtr, int n, int m){
 void stampare_matrice(matrice *matPtr){
     printf("\n");
     for(int i=0; i < matPtr->lin; i++){
-        printf("[");
+        printf("[ ");
         for(int j=0; j < matPtr->col; j++){
             printf("%.2f ", *(matPtr->mat + i * matPtr->col + j));
         }
@@ -181,18 +181,63 @@ void sottrazione_matriciale(matrice *matPtr, matrice *matSub){
         }
     }
     else{
-        printf("ERRORE: matrici nulle");
+        printf("ERRORE: matrici null");
         exit(1);
     }
     
 }
 
-matrice *moltiplicazione_matriciale(matrice *matPtr, matrice *matMul, float num){
-    
+matrice *moltiplicazione_matriciale(matrice *matPtr, matrice *matMul){
+    if(matPtr != NULL && matMul != NULL){
+        if(matPtr->col == matMul->lin){
+
+            //costruttore della matrice
+            matrice *matSol=(matrice*)malloc(sizeof(matrice));
+            matSol->lin=matPtr->lin;
+            matSol->col=matMul->col;
+            matSol->mat=(float *)malloc(matSol->lin * matSol->col * sizeof(float));
+            
+            //logica della moltiplicazione matriciale
+            for(int i=0; i < matPtr->lin; i++){
+                for(int j=0; j < matMul->col; j++){
+                float num=0;                
+                    for(int k=0; k < matPtr->col; k++){
+                        *(matSol->mat + i * matSol->col + j) += *(matPtr->mat + i * matPtr->col + k) * *(matMul->mat + k * matMul->col + j);
+                    }
+                    printf("num result: %.2f\n", *(matSol->mat + i * matSol->col + j));
+                }
+            }
+            return matSol;
+        }
+        else{
+            printf("ERRORE: dimensioni matrici disuguali, dim1: %.2f != dim2: %.2f", matPtr->col, matMul->lin);
+            exit(1);
+        }
+    }
+    else{
+        printf("ERRORE: Matrici null");
+        exit(1);
+    }
 }
 
 matrice *transporre_matrice(matrice *matPtr){
+    if(matPtr != NULL){
+        matrice *matSol=(matrice *)malloc(sizeof(matrice));
+        matSol->lin=matPtr->col;
+        matSol->col=matPtr->lin;
+        matSol->mat=(float *)malloc(matSol->lin * matSol->col * sizeof(float));
 
+        for(int i=0; i < matPtr->lin; i++){
+            for(int j=0; j < matPtr->col; j++){
+                *(matSol->mat + j * matSol->col + i)= *(matPtr->mat + i * matPtr->col + j);
+            }
+        }
+        return matSol;
+    }
+    else{
+        printf("ERRORE: matrice null");
+        exit(1);
+    }
 }
 
 float determinante_matrice2x2(matrice *matPtr){
@@ -216,4 +261,26 @@ void dealocare_matrice(matrice *matPtr) {
     matPtr->mat=NULL;
     matPtr->lin=0;
     matPtr->col=0;
+}
+
+
+int main(void){
+    matrice mat1;
+    matrice mat2;
+    matrice *mat3;
+    matrice *mat4;
+
+    costruire_matrice_random(&mat1, 2, 3);
+    costruire_matrice_random(&mat2, 3, 2);
+    stampare_matrice(&mat1);
+    stampare_matrice(&mat2);
+
+    mat3=moltiplicazione_matriciale(&mat1, &mat2);
+    stampare_matrice(mat3);
+
+    mat4=transporre_matrice(&mat3);
+    stampare_matrice(mat4);
+
+    
+    return 0;
 }

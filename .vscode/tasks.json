@@ -1,0 +1,35 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build with Makefile", // Questo è il nome della task. Sarà referenziato in launch.json
+            "type": "shell",
+            "command": "make", // Il comando da eseguire: invoca il Makefile
+            "args": [], // Nessun argomento extra per 'make' è necessario qui, dato che l'obiettivo 'all' è il default
+            "options": {
+                "cwd": "${workspaceFolder}" // Esegui 'make' nella directory radice del tuo progetto
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true // Rende questa la task di build predefinita quando premi Ctrl+Shift+B
+            },
+            "problemMatcher": [
+                "$gcc" // Per catturare gli errori e i warning del compilatore (gcc) dal terminale
+            ],
+            "detail": "Compiles the C project using the local Makefile."
+        },
+        {
+            "label": "Clean with Makefile", // Task per pulire i file compilati
+            "type": "shell",
+            "command": "make clean",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": {
+                "kind": "none"
+            },
+            "problemMatcher": [],
+            "detail": "Cleans compiled files using the Makefile's clean target."
+        }
+    ]
+}
