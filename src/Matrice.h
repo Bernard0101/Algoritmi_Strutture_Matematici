@@ -17,18 +17,23 @@ typedef struct matrice{
 void costruire_matrice(matrice *matPtr, int n, int m);
 void costruire_matrice_random(matrice *matPtr, int n, int m);
 void costruire_matrice_identita(matrice *matPtr, int n);
+void costruire_matrice_triangolare_superiore(matrice *matPtr, int n);
+void costruire_matrice_triangolare_inferiore(matrice *matPtr, int n);
+void costruire_matrice_nulla(matrice *matPtr, int n, int m);
 void dealocare_matrice(matrice *matPtr);
 
 //Stampa
 void stampare_matrice(matrice *matPtr);
 
 //Operazioni sulle matrici
-void somare_matrice(matrice *matPtr, matrice *matSum, float num);
-void sotrarre_matrice(matrice *matPtr, matrice *matSub, float num);
+void somma_scalare(matrice *matPtr, float num);
+void sottrazione_scalare(matrice *matPtr, float num);
+void somma_matriciale(matrice *matPtr, matrice *matSum);
+void sottrazione_matriciale(matrice *matPtr, matrice *matSub);
 float determinante_matrice2x2(matrice *matPtr);
-matrice *moltiplicare_matrice(matrice *matPtr, matrice *matMul, float num);
+matrice *moltiplicazione_matriciale(matrice *matPtr, matrice *matMul);
+matrice *transporre_matrice(matrice *matPtr);
 
 //operazioni deverse
-matrice *applicare_filtro(matrice *matPtr, matrice *kernel);
 
 #endif 
