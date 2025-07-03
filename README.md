@@ -35,9 +35,11 @@ operazioni come...
 - somma e sottrazione per uno scalare o tra matrici
 - determinante di matrice2x2
 - moltiplicazione tra matrici
+- trasposizioni di matrice
 
 ### Obbiettivo del progetto:
-offrire una buona compreensione dei meccanismi interni della manipolazione dei dati, e come la memoria viene aggiornata per ogni operazione
+offrire una buona compreensione dei meccanismi interni delle operazioni, della manipolazione dei dati e come la memoria viene aggiornata per ogni operazione
 
 ### Per compilare:
-basta utilizzare il make file con il comando `make` nella root del progetto, e poi avviare il file cosidetto `./programma`
+basta utilizzare il make file con il comando `make` nella root del progetto, e poi avviare il file cosidetto
+`./programma`
