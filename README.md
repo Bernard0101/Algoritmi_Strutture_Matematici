@@ -41,5 +41,5 @@ operazioni come...
 offrire una buona compreensione dei meccanismi interni delle operazioni, della manipolazione dei dati e come la memoria viene aggiornata per ogni operazione
 
 ### Per compilare:
-basta utilizzare il make file con il comando `make` nella root del progetto, e poi avviare il file cosidetto
+basta utilizzare il make file con il comando `make` nella root del progetto, e poi avviare il file:
 `./programma`

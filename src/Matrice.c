@@ -262,25 +262,3 @@ void dealocare_matrice(matrice *matPtr) {
     matPtr->lin=0;
     matPtr->col=0;
 }
-
-
-int main(void){
-    matrice mat1;
-    matrice mat2;
-    matrice *mat3;
-    matrice *mat4;
-
-    costruire_matrice_random(&mat1, 2, 3);
-    costruire_matrice_random(&mat2, 3, 2);
-    stampare_matrice(&mat1);
-    stampare_matrice(&mat2);
-
-    mat3=moltiplicazione_matriciale(&mat1, &mat2);
-    stampare_matrice(mat3);
-
-    mat4=transporre_matrice(&mat3);
-    stampare_matrice(mat4);
-
-    
-    return 0;
-}

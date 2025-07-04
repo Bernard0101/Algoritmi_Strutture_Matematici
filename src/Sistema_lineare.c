@@ -91,50 +91,7 @@ void scambiare_righe_sistema_lineare(sistema_lineare *sistemaPtr, int riga1, int
 }
 
 void scalonare_riga_sistema_lineare(sistema_lineare *sistemaPtr, int riga_pivot, int riga_scalonare, int colonna_pivot){
-    if(sistemaPtr != NULL){
-        if(colonna_pivot < sistemaPtr->matPtr->col && riga_scalonare < sistemaPtr->matPtr->lin && riga_pivot < sistemaPtr->matPtr->lin){
-            float coefficiente=- *(sistemaPtr->matPtr->mat + riga_scalonare * sistemaPtr->matPtr->col + colonna_pivot);
-            for(int i=0; i < sistemaPtr->matPtr->col; i++){
-                float termine_eliminativo= *(sistemaPtr->matPtr->mat + riga_pivot * sistemaPtr->matPtr->col + i);
-                termine_eliminativo*=coefficiente;
-                printf("%.1f", termine_eliminativo);
-                *(sistemaPtr->matPtr->mat + riga_scalonare * sistemaPtr->matPtr->col + i) += termine_eliminativo;
-            }
-            float termine_eliminativo= *(sistemaPtr->vetPtr->vet + riga_pivot);
-            termine_eliminativo*=coefficiente;
-            *(sistemaPtr->vetPtr->vet + riga_scalonare) += termine_eliminativo;
-        }
-        else{
-            printf("ERRORE: colonna_pivot %d e/o riga_scalonare %d, valore invalido", colonna_pivot, riga_scalonare);
-            exit(1);
-        }
-    }
-    else{
-        printf("ERRORE: sistema lineare NULL");
-        exit(1);
-    }
 }
  
 void Eliminazione_Gauss_Jordan(sistema_lineare *sistemaPtr){
-    printf("inizio 1");
-    if(sistemaPtr != NULL){
-        for(int i=0, j=0; i < sistemaPtr->lin; i++, j++){
-            if(*(sistemaPtr->matPtr->mat + i * sistemaPtr->matPtr->col + j) == 1){
-                for(int k=0; k < sistemaPtr->matPtr->lin; k++){
-                    scalonare_riga_sistema_lineare(&sistemaPtr, i, k, j);
-                }
-            }
-            else{
-                float coefficiente= *(sistemaPtr->matPtr->mat + i * sistemaPtr->matPtr->col + j);
-                dividere_riga_sistema_lineare(&sistemaPtr, i, coefficiente);
-                for(int k=0; k < sistemaPtr->matPtr->lin; k++){
-                    scalonare_riga_sistema_lineare(&sistemaPtr, i, k, j);
-                }
-            }
-        }
-    }
-    else{
-        printf("ERRORE: Sistema Lineare NULL");
-        exit(1);
-    }
 }
