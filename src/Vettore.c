@@ -20,7 +20,7 @@ void costruire_vettore(vettore *vetPtr, int n){
     }
 }
 
-//costruisce un vettore ranodomico di dimensione n
+//costruisce un vettore randomico di dimensione n
 void costruire_vettore_random(vettore *vetPtr, int n){
     vetPtr->size=n;
     vetPtr->vet=(float *)malloc(n * sizeof(float));
@@ -29,6 +29,7 @@ void costruire_vettore_random(vettore *vetPtr, int n){
         float num=rand() % 100;
         *(vetPtr->vet + i)=num;
     }
+    stampare_vettore(vetPtr);
 }
 
 //costruisce un vettore tra due punti

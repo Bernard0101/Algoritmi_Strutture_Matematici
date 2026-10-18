@@ -6,21 +6,19 @@
 #include "Matrice.h"
 
 
-
 void costruire_matrice(matrice *matPtr, int n, int m){
     
     //alloca e costroi la matrice con le dimensioni n X m 
     matPtr->lin=n;
     matPtr->col=m;
     matPtr->mat=(float *)malloc(n * m * sizeof(float));
-    
-    
+
     //adizionare valori alla matrice
     printf("\ninserisci i valori della matrice\n");
     for(int i=0; i < matPtr->lin; i++){
         for(int j=0; j < matPtr->col; j++){
             printf("\nposizione %d, %d: ", i, j);
-            scanf("%f", (matPtr->mat + i * m + j));
+            scanf("%f", (matPtr->mat + i * matPtr->col + j));
             
         }
     }
@@ -41,19 +39,16 @@ void costruire_matrice_random(matrice *matPtr, int n, int m){
 }
 
 void costruire_matrice_identita(matrice *matPtr, int n){
-    
-    //fa l'allocazione dinamica della struttura matriciale
     matPtr->lin=n;
     matPtr->col=n;
     matPtr->mat=(float *)malloc(n * n * sizeof(float));
-
-    for(int i=0; i < n; i++){
+    for (int i=0; i < n; i++){
         for(int j=0; j < n; j++){
-            if(i == j){
-                *(matPtr->mat + i * n + j)=1;
+            if(j == i){
+                *(matPtr->mat + i * matPtr->col + j) = 1;
             }
             else{
-                *(matPtr->mat + i * n + j)=0;
+                *(matPtr->mat + i * matPtr->col + j) = 0;
             }
         }
     }
@@ -105,8 +100,18 @@ void costruire_matrice_nulla(matrice *matPtr, int n, int m){
     }
 }
 
-
-
+matrice* copiare_matrice(matrice *matPtr){
+    matrice *matCopy =(matrice*)malloc(sizeof(matrice));
+    matCopy->lin=matPtr->lin;
+    matCopy->col=matPtr->col;
+    matCopy->mat=(float *)malloc(matCopy->lin * matCopy->col * sizeof(float));
+    for(int i=0; i < matCopy->lin; i++){
+        for(int j=0; j < matCopy->col; j++){
+            *(matCopy->mat + i * matCopy->col + j) = *(matPtr->mat + i * matPtr->col + j);
+        }
+    }
+    return matCopy;
+}
 
 void stampare_matrice(matrice *matPtr){
     printf("\n");
@@ -229,36 +234,83 @@ matrice *transporre_matrice(matrice *matPtr){
 
         for(int i=0; i < matPtr->lin; i++){
             for(int j=0; j < matPtr->col; j++){
-                *(matSol->mat + j * matSol->col + i)= *(matPtr->mat + i * matPtr->col + j);
+                *(matSol->mat + j * matSol->col + i) = *(matPtr->mat + i * matPtr->col + j);
             }
         }
         return matSol;
     }
     else{
-        printf("ERRORE: matrice null");
+        printf("ERRORE: matrice is null");
         exit(1);
     }
 }
 
-float determinante_matrice2x2(matrice *matPtr){
-    if(matPtr->lin == 2 && matPtr->col == 2){
-        float a= *(matPtr->mat + 0 * matPtr->col + 0);
-        float b= *(matPtr->mat + 0 * matPtr->col + 1);
-        float c= *(matPtr->mat + 1 * matPtr->col + 0);
-        float d= *(matPtr->mat + 1 * matPtr->col + 1);
-        
-        return (a*d) - (b*c);
+void riduzione_scala(matrice *matScala, int mat_i, int mat_j){
+    for(int i=0; i < matScala->lin; i++){
+        float fattore= *(matScala->mat + i * matScala->col + mat_j);
+        printf("fattore -> (%f)\n", fattore);
+        if(i == mat_i || fattore == 0){
+            continue;
+        }
+        else{
+            for(int j=mat_j; j < matScala->col; j++){
+                *(matScala->mat + i * matScala->col + j) -= fattore * *(matScala->mat + mat_i * matScala->col + j);
+                printf("risultato in pos(%d, %d): %f", i, j, *(matScala->mat + i * matScala->col + j));
+            }    
+        }   
+    }
+}
+
+matrice *algoritmo_gauss_jordan(matrice *matPtr){
+    matrice *matScala;
+
+    if(matPtr != NULL){
+        //copia la matrice originale ad una nuova
+        matScala=copiare_matrice(matPtr);
+
+        //itera su tutta la matrice
+        for(int i=0; i < matScala->lin; i++){
+            for(int j=0; j < matScala->col; j++){
+                printf("pos matrice principale (%d, %d)\n\n", i, j);
+
+                //esegue l'operazione di riduzione a scala se il fattore i==j e se il valore assosciato e uguale a 1
+                if(i == j && *(matScala->mat + i * matScala->col + j) == 1){
+                    riduzione_scala(matScala, i, j);
+                }   
+                //esegue l'operazione di riduzione a scala se il fattore e i==j e se il valore assosciato e e diverso da zero
+                else if(i == j && *(matScala->mat + i * matScala->col + j) != 0){
+                    float factor=*(matScala->mat + i * matScala->col + j);
+                    for(int k=j; k < matScala->col; k++){
+                        *(matScala->mat + i * matScala->col + k) /= factor;
+                    }        
+                    riduzione_scala(matScala, i, j);
+                }
+            }
+        }
+        return matScala;
     }
     else{
-        printf("ERRORE: matrice non ha dimensioni 2x2");
+        printf("ERRORE: matrice is null");
         exit(1);
     }
 }
 
+float determinante_matrice(matrice *matPtr){
+    matrice* matScala=(matrice *)malloc(sizeof(matrice));
+    matScala->lin=matPtr->lin;
+    matScala->col=matPtr->col;
+    matScala->mat=(float *)malloc(matScala->lin * matScala->col * sizeof(float));
+    matScala=algoritmo_gauss_jordan(&matPtr);
+    float det;
+    for(int i=0, j=0; i < matScala->lin; i++, j++){
+        det *= *(matScala->mat + i * matScala->col + j);
+    }
+    return det;
+}
 
 void dealocare_matrice(matrice *matPtr) {
     free(matPtr->mat);
-    matPtr->mat=NULL;
     matPtr->lin=0;
     matPtr->col=0;
+    free(matPtr);
 }

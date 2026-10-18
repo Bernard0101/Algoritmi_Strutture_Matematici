@@ -30,10 +30,9 @@ void somma_scalare(matrice *matPtr, float num);
 void sottrazione_scalare(matrice *matPtr, float num);
 void somma_matriciale(matrice *matPtr, matrice *matSum);
 void sottrazione_matriciale(matrice *matPtr, matrice *matSub);
-float determinante_matrice2x2(matrice *matPtr);
 matrice *moltiplicazione_matriciale(matrice *matPtr, matrice *matMul);
 matrice *transporre_matrice(matrice *matPtr);
+matrice *algoritmo_gauss_jordan(matrice *matPtr);
 
-//operazioni deverse
 
 #endif 
